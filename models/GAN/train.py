@@ -1,3 +1,4 @@
+import cv2
 import numpy as np
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.optimizers import Adam
@@ -38,12 +39,16 @@ def train(epochs, batch_size, save_interval):
 def save_generated_images(generator, epoch, examples=100, dim=(10, 10), figsize=(10, 10)):
     noise = np.random.normal(0, 1, size=[examples, 100])
     generated_images = generator.predict(noise)
-    generated_images = generated_images.reshape(examples, 28, 28)
- 
+    generated_images = generated_images.reshape(examples, 28, 28) 
+    np.save(f'gan_generated_image_epoch_{epoch}.npy', generated_images) 
     plt.figure(figsize=figsize)
     for i in range(generated_images.shape[0]):
         plt.subplot(dim[0], dim[1], i+1)
         plt.imshow(generated_images[i], interpolation='nearest', cmap='gray_r')
         plt.axis('off')
     plt.tight_layout()
-    plt.savefig(f'gan_generated_image_epoch_{epoch}.png')
+    plt.savefig(f'gan_generated_image_epoch_{epoch}.png') 
+    for i in range(generated_images.shape[0]):
+        cv2.imshow(f'Generated Image {i}', generated_images[i])
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

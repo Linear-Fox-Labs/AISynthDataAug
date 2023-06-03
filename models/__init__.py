@@ -1,3 +1,3 @@
 """
-GAN & CNN
+GAN - Generative Adversarial Networks
 """
